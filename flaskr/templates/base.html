@@ -1,0 +1,31 @@
+{#{{Using Jinja library to render HTML}}#}
+
+<!doctype html>
+{#{{block title changes title displayed in browser and window tab}}#}
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+  <h1>Flaskr</h1>
+  <ul>
+{#{{ if g is set, from load_logged_in_user, username and logout link are displayed}}#}
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+{#{{ or links to register and login}}#}
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+{#{{Block header changes title displayed on the page}}#}
+    {% block header %} {% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+{#{{block content is where the pages content goes}}#}
+  {% block content %}{% endblock %}
+</section>
